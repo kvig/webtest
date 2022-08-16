@@ -1,0 +1,9 @@
+<li id='list_{{ id }}' class='bg-gray-100 border border-gray-300 rounded-md shadow-sm p-2 px-4 my-2 flex justify-between'>
+    <a href='/list/{{ id }}' class='border border-gray-100 text-green-800 font-mono px-2 py-1 hover:text-green-500'>
+        {{ title }}
+    </a>
+    <button hx-delete='/api/lists/{{ id }}' hx-target='closest li' hx-swap='outerHTML'
+            class='border px-2 py-1 font-mono text-sm bg-red-400 hover:bg-red-500 text-gray-100'>
+        Delete List
+    </button>
+</li>
