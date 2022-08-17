@@ -1,15 +1,14 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.query import QuerySet
 from django.http import HttpResponse
-from django.template.loader import get_template
-from rest_framework import viewsets, status
+from django.shortcuts import get_object_or_404, render
+from rest_framework import status, viewsets
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from .serializers import TaskSerializer, ListSerializer
-from ..models import Task, List
+from ..models import List, Task
+from .serializers import ListSerializer, TaskSerializer
 
 
 class ListViewSet(viewsets.ModelViewSet):
@@ -17,7 +16,6 @@ class ListViewSet(viewsets.ModelViewSet):
     serializer_class = ListSerializer
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    template = get_template("list_li.html")
 
     def get_queryset(self) -> QuerySet:
         user = self.request.user
@@ -27,17 +25,14 @@ class ListViewSet(viewsets.ModelViewSet):
         serializer = ListSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
-            result = ListViewSet.template.render(context=serializer.data)
-            return HttpResponse(result, status=status.HTTP_201_CREATED)
+            return render(request, "list_li.html", serializer.data)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request: Request, pk=None):
-        try:
-            list_obj = List.objects.get(id=pk)
-            list_obj.delete()
-            return HttpResponse(status=status.HTTP_200_OK)
-        except ObjectDoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        list_obj = get_object_or_404(List, id=pk)
+        list_obj.delete()
+        return HttpResponse(status=status.HTTP_200_OK)
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -45,8 +40,6 @@ class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    patch_template = get_template("task_completed_button.html")
-    template = get_template("task_li.html")
 
     def get_queryset(self) -> QuerySet:
         user = self.request.user
@@ -56,31 +49,24 @@ class TaskViewSet(viewsets.ModelViewSet):
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            result = TaskViewSet.template.render(context=serializer.data)
-            return HttpResponse(result, status=status.HTTP_201_CREATED)
+            return render(request, "task_li.html", serializer.data)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request: Request, pk=None) -> Response:
-        try:
-            task_obj: Task = Task.objects.get(id=pk)
-            task_obj.completed = not task_obj.completed
-            task_obj.save()
-            context = {
-                'id': pk, 'title': task_obj.title, 
-                'completed': task_obj.completed,
-                'parent_list': task_obj.parent_list}
+        task_obj = get_object_or_404(Task, id=pk)
+        task_obj.completed = not task_obj.completed
+        task_obj.save()
+        context = {
+            "id": pk,
+            "title": task_obj.title,
+            "completed": task_obj.completed,
+            "parent_list": task_obj.parent_list,
+        }
 
-            result = TaskViewSet.patch_template.render(context=context)
-            return HttpResponse(result, status=status.HTTP_201_CREATED)
-        except ObjectDoesNotExist:
-            pass
-
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return render(request, "task_completed_button.html", context)
 
     def destroy(self, request: Request, pk=None):
-        try:
-            task_obj = Task.objects.get(id=pk)
-            task_obj.delete()
-            return HttpResponse(status=status.HTTP_200_OK)
-        except ObjectDoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        task_obj = get_object_or_404(Task, id=pk)
+        task_obj.delete()
+        return HttpResponse(status=status.HTTP_200_OK)

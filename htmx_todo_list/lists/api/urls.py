@@ -12,4 +12,3 @@ app_name = 'api'
 urlpatterns = [
     path('', include(router.urls)),
 ]
-print(f"router: {router.get_urls()!r}")
