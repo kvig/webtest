@@ -1,0 +1,25 @@
+<turbo-stream action="append" target="tasks" >
+    <template>
+        <turbo-frame id="task_{{ id }}">
+            <div class="bg-gray-100 border border-gray-300 rounded-md shadow-sm p-2 px-4 my-2 flex justify-between font-mono">
+                <div class="flex justify-start">
+                    <a data-turbo-method="delete" href="{% url 'api:tasks-list' %}{{ id }}/" class="mr-2">
+                        <svg class="h-5 text-gray-500 hover:text-red-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </a>
+                    <p class="text-gray-800">{{ title }}</p>
+                </div>
+                <turbo-frame id="task_{{id}}_completed">
+                    {% if completed %}
+                    <a data-turbo-method="patch" href="{% url 'api:tasks-list' %}{{ id }}/"
+                            class="text-green-500 hover:text-gray-500 cursor-pointer">Completed</a>
+                    {% else %}
+                    <a data-turbo-method="patch" href="{% url 'api:tasks-list' %}{{ id }}/"
+                            class="text-gray-500 hover:text-green-500 cursor-pointer">Not Completed</a>
+                    {% endif %}
+                </turbo-frame>
+            </div>
+        </turbo-frame>
+    </template>
+</turbo-stream>

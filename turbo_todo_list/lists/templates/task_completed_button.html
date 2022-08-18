@@ -1,0 +1,11 @@
+<turbo-stream action="update" target="task_{{id}}_completed">
+    <template>
+        {% if completed %}
+        <a data-turbo-method="patch" href="{% url 'api:tasks-list' %}{{ id }}/"
+                class="text-green-500 hover:text-gray-500 cursor-pointer">Completed</a>
+        {% else %}
+        <a data-turbo-method="patch" href="{% url 'api:tasks-list' %}{{ id }}/"
+                class="text-gray-500 hover:text-green-500 cursor-pointer">Not Completed</a>
+        {% endif %}
+    </template>
+</turbo-stream>
