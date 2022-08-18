@@ -1,5 +1,5 @@
 """
-WSGI config for alpine_todo_list project.
+WSGI config for base_todo_list project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'alpine_todo_list.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'base_todo_list.settings')
 
 application = get_wsgi_application()
