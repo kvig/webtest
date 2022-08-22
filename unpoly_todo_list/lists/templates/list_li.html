@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+To-Do List App - Unpoly
+{% endblock %}
+
+{% block content %}
+
+<div class="mx-4 md:mx-32 my-16 bg-white shadow p-8 px-8 rounded-sm">
+    <form id="list-form" method="post" action="{% url 'api:lists-list' %}" up-target="#list-form-input, #lists:after">
+        <div class="flex justify-end mt-4">
+            <div class="rounded-md border shadow p-2 flex-1 inline-flex">
+                <input id="list-form-input" type="text" class="mr-2 w-5/6" name="title" placeholder="new list">
+            </div>
+        </div>
+    </form>
+    <ul id="lists" class="lists">
+        <li id='list_{{ id }}' class='bg-gray-100 border border-gray-300 rounded-md shadow-sm p-2 px-4 my-2 flex justify-between'>
+            <a href='/list/{{ id }}' class='border border-gray-100 text-green-800 font-mono px-2 py-1 hover:text-green-500'>
+                {{ title }}
+            </a>
+            <button up-method='delete' action='/api/lists/{{ id }}' up-target='#list_{{ id }}'
+                    class='border px-2 py-1 font-mono text-sm bg-red-400 hover:bg-red-500 text-gray-100'>
+                Delete List
+            </button>
+        </li>
+    </ul>
+</div>
+
+{% endblock %}

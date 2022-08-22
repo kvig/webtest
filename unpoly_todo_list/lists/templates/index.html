@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+To-Do List App - Unpoly
+{% endblock %}
+
+{% block content %}
+
+<div class="mx-4 md:mx-32 my-16 bg-white shadow p-8 px-8 rounded-sm">
+    <h2 class="text-green-500 font-black text-2xl uppercase text-center">{{ request.user.username }}'s Lists</h2>
+    <form id="list-form" method="post" action="{% url 'api:lists-list' %}" up-target="#list-form-input, #lists:after">
+        {% csrf_token %}
+        <div class="flex justify-end mt-4">
+            <div class="rounded-md border shadow p-2 flex-1 inline-flex">
+                <input id="list-form-input"  type="text" class="mr-2 w-5/6" name="title" placeholder="new list">
+                <input type="submit" class="w-1/6 border px-2 py-1 font-mono text-sm bg-green-400 hover:bg-green-500 active:bg-green-700 text-gray-100" value="Add List" />
+            </div>
+        </div>
+    </form>
+
+    <ul id="lists" class="lists">
+        {% for list in lists %}
+        <li id="list_{{ list.id }}" class="bg-gray-100 border border-gray-300 rounded-md shadow-sm p-2 px-4 my-2 flex justify-between">
+            <a href="{% url 'lists:detail' list.id %}" class="border border-gray-100 text-green-800 font-mono px-2 py-1 hover:text-green-500">{{ list.title }}</a>
+            <a up-method="delete" href="{% url 'api:lists-list' %}{{ list.id }}/" up-target="#list_{{ list.id }}"
+                    class="border px-2 py-1 font-mono text-sm bg-red-400 hover:bg-red-500 text-gray-100">Delete List</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
