@@ -2,11 +2,10 @@ Original tutorial published on [jankowski.dev](https://dev.to/dtuidmaciek/todo-l
 
 - base_todo_list - Skeleton implementation of the site, no interactions
 - alpine_todo_list - The end result of the jankowski.dev tutorial, there is an alpine 2.x and alpine 3.x version in lists/templates
-- htmx_todo_list - Native HTMX implementation of the site, uses Django templates for replacing the elements
-- tailwind_toto_list - I forget what this was supposed to be
-- turbo_todo_list - Future - implement with Turbo
-
-Also - may try unicorn and unpoly.
+- django_unicorn_todo_list - Native Django Unicorn implementation of the site. Heavily leverages Django for most things. No Websocket/SSE support.
+- htmx_todo_list - Native HTMX implementation of the site, uses Django templates for replacing the elements. No Websocket/SSE async updates.
+- turbo_todo_list - Native Turbo implementation of the site, uses Django templates for replacing the elements. No Websocket/SSE async updates.
+- unpoly_todo_list - Implementation of the Todo list with unpoly. It's a partial implementation since the DELETE requests were getting remapped and I didn't want to figure out what the actual request was.
 
 
 Select a directory and run:
