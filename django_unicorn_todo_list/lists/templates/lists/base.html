@@ -1,0 +1,25 @@
+{% load static %}
+{% load unicorn %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>{% block title %} {% endblock %}</title>
+
+        <link href="{% static 'css/tailwind-2.2.19.min.css' %}" rel="stylesheet"/>
+        {% unicorn_scripts %}
+    </head>
+    <body class="bg-gray-100">
+        {% csrf_token %}
+        <div class="bg-green-500 py-8 text-center">
+            <h1 class="text-gray-100 font-black text-4xl tracking-5">To-Do List App</h1>
+            <p class="text-green-800 font-medium font-mono text-sm">Written with Django, Django Rest Framework, TailwindCSS, Django Unicorn</p>
+        </div>
+
+{% block content %}
+{% endblock %}
+
+    </body>
+</html>

@@ -1,0 +1,10 @@
+{% extends 'lists/base.html' %}
+{% load unicorn %}
+
+{% block title %}
+To-Do List App - Django Unicorn
+{% endblock %}
+
+{% block content %}
+  {% unicorn 'tasks' parent_list=list %}    
+{% endblock %}
